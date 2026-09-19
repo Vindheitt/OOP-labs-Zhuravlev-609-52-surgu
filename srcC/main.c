@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
 
 // Элементы списка предназначены для хранения сетевого или локального адреса.
 // Адрес ресурса в сети Интернет должен содержать протокол (HTTP, FTP и т.п.), имя
@@ -61,8 +60,8 @@ int main() {
 void printActions() {
 	printf("\t1 - Add item\n");
 	printf("\t2 - Delete item\n");
-	printf("\t3 - Print items\n");
-	//printf("\t3 - Insert item\n");
+	printf("\t3 - Insert item\n");
+	printf("\t4 - Print items\n");
 	printf("\t0 - Exit\n");
 }
 void clearScreen(){
@@ -105,15 +104,15 @@ void action(int userChoose, list_t *list) {
 			}while(enterInt(&index));
 		    Delete(list, index);
 		    break;
-		// case 3:
-		//     //createItem(&item);
-		//     //printItems(list);
-		// 	do{
-		// 		printf("Choose index num: ");
-		// 	}while(enterInt(&index));
-		// 	insert(list, item, index);
-		//     break;
 		case 3:
+		    createItem(&item);
+		    printItems(list);
+			do{
+				printf("Choose index num: ");
+			}while(enterInt(&index));
+			insert(list, item, index);
+		    break;
+		case 4:
 		    printItems(list);
 			getchar();
 		    break;
@@ -132,11 +131,6 @@ void createItem(item_t **item){
         return;
     (*item)->next = NULL;
     (*item)->prev = NULL;
-    printf("Enter text: ");
-    // (*item)->text = malloc(sizeof(char)*128);
-    // if(!(*item)->text)
-    //     return;
-    // fgets((*item)->text, 128, stdin);
 }
 void createList(list_t **list){
     *list = malloc(sizeof(list_t));
@@ -228,12 +222,6 @@ void insert(list_t *list, item_t *newItem, int index){
         Add(list, newItem);
         return;
     }
-
-    if(!list->head){
-        Add(list, newItem);
-        return;
-    }
-
     if(item->prev){
         newItem->next = item;
         newItem->prev = item->prev;
@@ -260,14 +248,11 @@ int count(const list_t *list){
     return count;
 }
 void clear(list_t *list){
-    //int i = 0;
     if (!list)
         return;
 
-    while(list->head) {
+    while(list->head)
         Delete(list, 0);
-        //printf("%d", i++);
-    }
     list->head = NULL;
     list->tail = NULL;
 }
