@@ -197,11 +197,12 @@ item_t *removeItem(list_t *list, int index){
         list->head = item->next;
         if(item->next)
             item->next->prev = NULL;
+        else
+            list->tail = NULL;
     }
     else if (!item->next){
         list->tail = item->prev;
-        if(!item->prev)
-            item->prev->next = NULL;
+        item->prev->next = NULL;
     }
     else{
         item->prev->next = item->next;
