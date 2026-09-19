@@ -79,24 +79,23 @@ void action(int userChoose, list_t *list) {
 			Add(list, item);
 			break;
 		case 2:
-		    printList(list);
+		    printItems(list);
 		    do{
 				printf("Choose index num: ");
 			}while(enterInt(&index));
 		    Delete(list, index);
 		    break;
-		// case 3:
-		//     //createItem(&item);
-		//     //printItems(list);
-		// 	do{
-		// 		printf("Choose index num: ");
-		// 	}while(enterInt(&index));
-		// 	insert(list, item, index);
-		//     break;
 		case 3:
-		    printList(list);
+		    createItem(&item);
+		    printItems(list);
+			do{
+				printf("Choose index num: ");
+			}while(enterInt(&index));
+			insert(list, item, index);
+		    break;
+		case 4:
+		    printItems(list);
 			printf("\n");
-			//getchar();
 		    break;
 		case 0:
 
