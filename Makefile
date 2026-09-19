@@ -1,10 +1,10 @@
 CC = gcc
 CXX = g++
-C_SRCDIR = srcC
-CPP_SRCDIR = srcCPP
+SRC_DIR = src
+INC_DIR = include
 OBJDIR = obj
 
-FLAGS = -Wall -Wextra -Wpedantic
+FLAGS = -Wall -Wextra -Wpedantic -I$(INC_DIR)
 CPPFLAGS = -std=c++17
 LDFLAGS =
 
@@ -12,11 +12,11 @@ TARGETS = cLab cppLab
 
 all: $(TARGETS)
 
-cLab: $(C_SRCDIR)/main.c
-	$(CC) $(C_SRCDIR)/main.c $(FLAGS) -o cLab
+cLab: $(SRC_DIR)/main.c
+	$(CC) $(SRC_DIR)/main.c $(SRC_DIR)/list.c $(FLAGS) -o cLab
 
-cppLab: $(CPP_SRCDIR)/main.cpp
-	$(CXX) $(CPP_SRCDIR)/main.cpp $(CPPFLAGS) $(FLAGS) -o cppLab
+cppLab: $(SRC_DIR)/main.cpp
+	$(CXX) $(SRC_DIR)/main.cpp $(CPPFLAGS) $(FLAGS) -o cppLab
 
 clean:
 	rm -f $(TARGETS)
