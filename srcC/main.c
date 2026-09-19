@@ -114,7 +114,7 @@ void action(int userChoose, list_t *list) {
 		    break;
 		case 4:
 		    printItems(list);
-			getchar();
+			printf("\n");
 		    break;
 		case 0:
 
