@@ -2,6 +2,7 @@ srcCPP
 cLab
 cppLab
 obj
-compile_commands.json
-.cache/
 task/
+compile_commands.json
+.cache
+src/main.cpp
