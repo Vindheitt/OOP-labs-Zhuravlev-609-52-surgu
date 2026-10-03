@@ -2,3 +2,6 @@ srcCPP
 cLab
 cppLab
 obj
+compile_commands.json
+.cache/
+task/
