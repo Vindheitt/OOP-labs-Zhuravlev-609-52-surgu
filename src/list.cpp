@@ -1,70 +1,72 @@
-#include "list.h"
+#include <list.h>
 
 #include <stdlib.h>
 
-void Add(list_t *list, item_t *newItem){
-    if (!list || !newItem)
-        return;
-    if (list->head == NULL) {
+List::List(){
+	this->head = nullptr;
+	this->tail = nullptr;
+}
+void List::Add(List *list, Item* newItem){
+    if (list->head == nullptr) {
         list->head = newItem;
-        newItem->prev = NULL;
+        newItem->prev = nullptr;
     }
     else {
         list->tail->next = newItem;
         newItem->prev = list->tail;
     }
 
-    newItem->next = NULL;
-    list->tail = newItem;
+	    newItem->next = nullptr;
+	    list->tail = newItem;
+	}
+void List::Delete(List* list, int index){
+    Item* item = Remove(list, index);
+    delete item;
 }
-void Delete(list_t *list, int index){
-    item_t* item = Remove(list, index);
-    free(item);
-}
-item_t *GetItem(const list_t *list, int index){
+Item* List::GetItem(const List *list, int index){
     int i = 0;
-    item_t *current;
+    Item *current;
     if (!list || index < 0)
-        return NULL;
+        return nullptr;
     current = list->head;
-    while (current != NULL) {
+    while (current != nullptr) {
         if (i == index)
             return current;
         current = current->next;
         i++;
     }
-    return NULL;
+    return nullptr;
 }
-item_t *Remove(list_t *list, int index){
-    item_t* item;
-    if (!list)
-        return NULL;
+Item* List::Remove(List *list, int index){
+	Item* item;
+	if (!list)
+        return nullptr;
     item = GetItem(list, index);
     if(!item)
-        return NULL;
+        return nullptr;
 
     if(!item->prev){
         list->head = item->next;
         if(item->next)
-            item->next->prev = NULL;
+            item->next->prev = nullptr;
         else
-            list->tail = NULL;
+            list->tail = nullptr;
     }
     else if (!item->next){
         list->tail = item->prev;
-        item->prev->next = NULL;
+        item->prev->next = nullptr;
     }
     else{
         item->prev->next = item->next;
         item->next->prev = item->prev;
     }
 
-    item->next = NULL;
-    item->prev = NULL;
+    item->next = nullptr;
+    item->prev = nullptr;
     return item;
 }
-void Insert(list_t *list, item_t *newItem, int index){
-    item_t* item;
+void List::Insert(List *list, Item *newItem, int index){
+    Item* item;
     if(!list || !newItem)
         return;
 
@@ -81,43 +83,43 @@ void Insert(list_t *list, item_t *newItem, int index){
     }
     else{
         newItem->next = list->head;
-        newItem->prev = NULL;
+        newItem->prev = nullptr;
         list->head->prev = newItem;
         list->head = newItem;
     }
 }
-int Count(const list_t *list){
+int List::Count(const List *list){
     int count;
-    item_t *current;
+    Item *current;
     if (!list)
         return 0;
 
     for(current = list->head, count = 0;
-        current != NULL;
+        current != nullptr;
         count++, current = current->next);
     return count;
 }
-void Clear(list_t *list){
+void List::Clear(List *list){
     if (!list)
         return;
 
     while(list->head)
         Delete(list, 0);
-    list->head = NULL;
-    list->tail = NULL;
+    list->head = nullptr;
+    list->tail = nullptr;
 }
-int GetIndex(const list_t *list, const item_t *item){
+int List::GetIndex(const List *list, const Item *item){
     int index;
-    item_t *current;
+    Item *current;
 
     if (!item || !list)
         return -1;
 
     for(current = list->head, index = 0;
-        current != NULL;
-        current = current->next,index++){
-            if (current == item)
-                return index;
-        }
+    current != nullptr;
+    current = current->next,index++){
+    if (current == item)
+        return index;
+    }
     return -1;
 }

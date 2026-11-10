@@ -6,3 +6,5 @@ task/
 compile_commands.json
 .cache
 src/main.cpp
+.clangd
+test.sh
