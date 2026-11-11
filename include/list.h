@@ -1,32 +1,56 @@
 #ifndef LIST_H
 #define LIST_H
 
+class Item;
+class List;
+
 class Item{
-	public:
+	friend class List;
+
+	private:
 		Item *next;
 		Item *prev;
+		List *owner;
+	public:
+		Item();
+
+		~Item();
+
+		Item* Next() const;
+
+		Item* Prev() const;
 };
 
 class List{
-	public:
+	private:
 		Item *head;
 		Item *tail;
-	List();
 
-	void Add(List *list, Item *newItem);
+	public:
+		List();
 
-	void Delete(List *list, int index);
+		~List();
 
-	Item *GetItem(const List *list, int index);
+		Item* Head() const;
 
-	Item *Remove(List *list, int index);
+		Item* Tail() const;
 
-	void Insert(List *list, Item *newItem, int index);
+		void Add(Item *newItem);
 
-	int Count(const List *list);
+		void Delete(int index);
 
-	void Clear(List *list);
+		Item *GetItem(int index);
 
-	int GetIndex(const List *list, const Item *item);
+		Item* Remove(int index);
+
+		Item* Remove(Item* item);
+
+		void Insert(Item *newItem, int index);
+
+		int Count();
+
+		void Clear();
+
+		int GetIndex(const Item *item);
 };
 #endif
