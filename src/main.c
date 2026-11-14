@@ -1,47 +1,32 @@
+#include <addr.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.h"
 
-// Элементы списка предназначены для хранения сетевого или локального адреса.
-//
-// Адрес ресурса в сети Интернет должен содержать протокол (HTTP, FTP и т.п.), имя
-// узла, путь и имя файла;
-//
-// адрес в локальной сети – имя компьютера, путь и имя
-// файла;
-//
-// адрес локального ресурса – диск (однобуквенное обозначение), путь и имя
-// файла;
-//
-// адрес электронной почты – имя узла и имя пользователя.
-//
-// Элемент любого типа сопровождается текстовым описанием.
-//
-// Необходимо обеспечить: сортировку
-// адресов по имени узла; поиск адреса по ключевому слову в описании. При выводе
-// всего списка отображать адреса в стандартном формате в соответствии с их типом.
+#include <list.h>
+#include <utils.h>
 
-void clearScreen(void);
-int enterInt(int *n);
-void createItem(item_t **item);
-void createList(list_t **list);
+int createList(list_t **list);
 void action(int userChoose, list_t *list);
 void printActions(void);
 void printList(list_t *list);
+void printOneItem(list_t* list, int index);
 //-----------------------------------------
-
-//-----------------------------------------
-int main() {
+int main(void) {
     int userChoose;
     int quantity = 0;
     list_t *list;
-    createList(&list);
+
+    if(createList(&list))
+    	return -1;
+
+    clearScreen();
 	do {
 	    quantity = Count(list);
 		printf("Now there %d items.\n", quantity);
 		printActions();
-		printf("Choose action: ");
-		enterInt(&userChoose);
+		do{
+			printf("Choose action: ");
+		}while(enterInt(&userChoose));
 		action(userChoose, list);
 	} while (userChoose);
 	Clear(list);
@@ -53,40 +38,26 @@ void printActions(void) {
 	printf("\t2 - Delete item\n");
 	printf("\t3 - Insert item\n");
 	printf("\t4 - Print items\n");
+	printf("\t5 - Print one item\n");
+	printf("\t6 - Sort\n");
+	printf("\t7 - Find in description\n");
 	printf("\t0 - Exit\n");
 }
-void clearScreen(void){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-int enterInt(int *n) {
-	if (n == NULL)
-		return -1;
-	char buf;
-	if (scanf("%d%c", n, &buf) != 2) {
-		printf("Something went wrong with enter int..\n");
-		printf("Please try again: ");
-		while (getchar() != '\n');
-		return 1;
-	}
-	if (buf != '\n') {
-		while (getchar() != '\n');
-	}
-	return 0;
-}
+
 void action(int userChoose, list_t *list) {
-    item_t *item;
+    void *item;
     int index;
+    addrType_t type;
+    char pattern[STR_LEN];
+
 	if (!list)
 		return;
 	clearScreen();
 	switch (userChoose) {
 		case 1:
-		    createItem(&item);
-			Add(list, item);
+			type = typeChoose();
+			item = Create(type);
+			Add(list, (item_t*)item);
 			break;
 		case 2:
 		    printList(list);
@@ -96,7 +67,8 @@ void action(int userChoose, list_t *list) {
 		    Delete(list, index);
 		    break;
 		case 3:
-		    createItem(&item);
+			type = typeChoose();
+			item = Create(type);
 		    printList(list);
 			do{
 				printf("Choose index num: ");
@@ -107,29 +79,40 @@ void action(int userChoose, list_t *list) {
 		    printList(list);
 			printf("\n");
 		    break;
+		case 5:
+			do{
+				printf("Choose index num: ");
+			}while(enterInt(&index));
+			printOneItem(list, index);
+		case 6:
+			Sort(list);
+			break;
+		case 7:
+			clearScreen();
+			printf("Enter pattern: ");
+			enterString(pattern, STR_LEN);
+			clearScreen();
+			Find(list, pattern);
+			printf("\n");
+			break;
 		case 0:
 
 		    break;
 		default:
 
 		    break;
-
 	}
 }
-void createItem(item_t **item){
-    *item = malloc(sizeof(item_t));
-    if(!(*item))
-        return;
-    (*item)->next = NULL;
-    (*item)->prev = NULL;
-}
-void createList(list_t **list){
+
+int createList(list_t **list){
+	if(!list)
+		return -1;
     *list = calloc(1, sizeof(list_t));
     if(!(*list))
-        return;
-    (*list)->head = NULL;
-    (*list)->tail = NULL;
+        return -1;
+    return 0;
 }
+
 void printList(list_t *list){
     item_t *p;
     int i;
@@ -139,7 +122,13 @@ void printList(list_t *list){
     for(p = list->head, i = 0;
         p != NULL;
         p = p->next, i++){
-        printf("%d\t%p\t%p\t%p\n", i, p, p->prev, p->next);
+        	printf("%d)", i);
+        	Print((void*)p);
     }
+}
+void printOneItem(list_t* list, int index){
+	baseAddr_t* ptr = (baseAddr_t*)GetItem(list, index);
+	Print(ptr);
+	printf("%s\n", ptr->descr);
 }
 //-----------------------------------------

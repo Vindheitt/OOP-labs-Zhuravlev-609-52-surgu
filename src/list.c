@@ -1,5 +1,4 @@
-#include "list.h"
-
+#include <list.h>
 #include <stdlib.h>
 
 void Add(list_t *list, item_t *newItem){
@@ -17,10 +16,12 @@ void Add(list_t *list, item_t *newItem){
     newItem->next = NULL;
     list->tail = newItem;
 }
+
 void Delete(list_t *list, int index){
     item_t* item = Remove(list, index);
     free(item);
 }
+
 item_t *GetItem(const list_t *list, int index){
     int i = 0;
     item_t *current;
@@ -35,6 +36,7 @@ item_t *GetItem(const list_t *list, int index){
     }
     return NULL;
 }
+
 item_t *Remove(list_t *list, int index){
     item_t* item;
     if (!list)
@@ -63,6 +65,7 @@ item_t *Remove(list_t *list, int index){
     item->prev = NULL;
     return item;
 }
+
 void Insert(list_t *list, item_t *newItem, int index){
     item_t* item;
     if(!list || !newItem)
@@ -86,6 +89,7 @@ void Insert(list_t *list, item_t *newItem, int index){
         list->head = newItem;
     }
 }
+
 int Count(const list_t *list){
     int count;
     item_t *current;
@@ -97,6 +101,7 @@ int Count(const list_t *list){
         count++, current = current->next);
     return count;
 }
+
 void Clear(list_t *list){
     if (!list)
         return;
@@ -106,6 +111,7 @@ void Clear(list_t *list){
     list->head = NULL;
     list->tail = NULL;
 }
+
 int GetIndex(const list_t *list, const item_t *item){
     int index;
     item_t *current;
