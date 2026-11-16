@@ -55,9 +55,7 @@ Item* List::GetItem(int index){
     return nullptr;
 }
 Item* List::Remove(int index){
-	Item* item;
-
-    item = GetItem(index);
+	Item* item = GetItem(index);
     return Remove(item);
 }
 Item* List::Remove(Item* item){
