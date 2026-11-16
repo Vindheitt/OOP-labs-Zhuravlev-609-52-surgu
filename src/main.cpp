@@ -1,13 +1,15 @@
 #include <iostream>
 #include <format>
 
+#include <addr.h>
 #include <list.h>
+#include <string>
 #include <utils.h>
 
 using std::cout;
 using std::format;
 
-class DebugList: public List{
+class DebugList: public AddrList{
 	public:
 		void Menu(void) {
 			int quantity = 0;
@@ -17,19 +19,11 @@ class DebugList: public List{
 			cout << format("\t2 - Delete item\n");
 			cout << format("\t3 - Insert item\n");
 			cout << format("\t4 - Print items\n");
+			cout << format("\t5 - Print one item\n");
+			cout << format("\t6 - Sort\n");
+			cout << format("\t7 - Find in description\n");
 			cout << format("\t0 - Exit\n");
 			cout << format("Choose action: ");
-		}
-		void printList(){
-		    Item *p;
-		    int i;
-
-		    for(p = this->Head(), i = 0;
-		        p != nullptr;
-		        p = p->Next(), i++){
-				cout << format("{}\t{}\t{}\t{}\n", i, \
-		        	(void*)p, (void*)p->Prev(), (void*)p->Next());
-		    }
 		}
 };
 //-----------------------------------------
@@ -37,9 +31,11 @@ int main() {
     int userChoose;
 
     int index;
-
-    Item *item;
+    addrType_t t;
+    BaseAddr *item;
     DebugList dl;
+    std::string pattern;
+    //AddrList dl;
     //List list;
 	do {
 		dl.Menu();
@@ -47,27 +43,54 @@ int main() {
 		clearScreen();
 		switch (userChoose) {
 			case 1:
-		   		item = new Item();
+				t = typeChoose();
+				item = createAddr(t);
+            	if (!item)
+             		break;
+             	item->Input();
 				dl.Add(item);
 				break;
 			case 2:
-		    	dl.printList();
+				dl.PrintList();
 			    do{
 					cout << format("Choose index num: ");
 				}while(enterInt(index));
 				dl.Delete(index);
 				break;
 			case 3:
-				item = new Item();
-				dl.printList();
+				t = typeChoose();
+				item = createAddr(t);
+				if (!item)
+             		break;
+				item->Input();
+				dl.PrintList();
 				do{
 					cout << format("Choose index num: ");
 				}while(enterInt(index));
 				dl.Insert(item, index);
 				break;
 			case 4:
-				dl.printList();
+				dl.PrintList();
 				cout << "\n";
+				break;
+			case 5:
+				do{
+					cout << format("Choose index num: ");
+				}while(enterInt(index));
+				item = (BaseAddr*)dl.GetItem(index);
+				if(item)
+					item->Print();
+				break;
+			case 6:
+				dl.Sort();
+				break;
+			case 7:
+				clearScreen();
+				cout << format("Enter pattern: ");
+				std::cin >> pattern;
+				clearScreen();
+				dl.Find(pattern);
+				cout << format("\n");
 				break;
 			case 0: break;
 			default:break;

@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#define macros_swap(type, x, y) do{type t; t = x; x = y; y = t;}while(0)
+
 using std::cin;
 
 void clearScreen(void){

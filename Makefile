@@ -8,7 +8,7 @@ FLAGS = -Wall -Wextra -Wpedantic -I./$(INC_DIR)
 CPPFLAGS = -std=c++23
 LDFLAGS =
 
-ALL_SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/list.cpp $(SRC_DIR)/utils.cpp
+ALL_SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/list.cpp $(SRC_DIR)/addr.cpp $(SRC_DIR)/utils.cpp
 
 TARGETS = cLab cppLab
 
