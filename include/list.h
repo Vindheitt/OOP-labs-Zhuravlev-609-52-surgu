@@ -14,7 +14,7 @@ class Item{
 	public:
 		Item(void);
 
-		~Item(void);
+		virtual ~Item(void);
 
 		Item* Next(void) const;
 
@@ -29,7 +29,7 @@ class List{
 	public:
 		List(void);
 
-		~List(void);
+		virtual ~List(void);
 
 		Item* Head(void) const;
 
@@ -52,7 +52,5 @@ class List{
 		void Clear(void);
 
 		int GetIndex(const Item *item);
-
-		void Swap(Item* first, Item* second);
 };
 #endif

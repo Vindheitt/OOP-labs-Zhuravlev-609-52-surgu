@@ -28,40 +28,39 @@ class DebugList: public AddrList{
 };
 //-----------------------------------------
 int main() {
-    int userChoose;
-
-    int index;
-    addrType_t t;
-    BaseAddr *item;
-    DebugList dl;
-    std::string pattern;
-    //AddrList dl;
-    //List list;
+	int userChoose;
+	addrType_t t;
+	int index;
+	BaseAddr *item;
+	DebugList dl;
+	std::string pattern;
+	//AddrList dl;
+	//List list;
 	do {
 		dl.Menu();
 		enterInt(userChoose);
 		clearScreen();
 		switch (userChoose) {
 			case 1:
-				t = typeChoose();
-				item = createAddr(t);
-            	if (!item)
-             		break;
-             	item->Input();
+				t = dl.typeChoose();
+				item = BaseAddr::createAddr(t);
+				if (!item)
+			 		break;
+			 	item->Input();
 				dl.Add(item);
 				break;
 			case 2:
 				dl.PrintList();
-			    do{
+				do{
 					cout << format("Choose index num: ");
 				}while(enterInt(index));
 				dl.Delete(index);
 				break;
 			case 3:
-				t = typeChoose();
-				item = createAddr(t);
+				t = dl.typeChoose();
+				item = BaseAddr::createAddr(t);
 				if (!item)
-             		break;
+			 		break;
 				item->Input();
 				dl.PrintList();
 				do{
