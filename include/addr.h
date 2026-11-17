@@ -9,44 +9,33 @@ class BaseAddr;
 
 typedef enum addrType{
 	NONE = 0,
-    NETWORK_ADDR,
-    LOCAL_NETWORK_ADDR,
-    LOCAL_FILE_ADDR,
-    EMAIL_ADDR,
+	NETWORK_ADDR,
+	LOCAL_NETWORK_ADDR,
+	LOCAL_FILE_ADDR,
+	EMAIL_ADDR,
 } addrType_t;
 
 void typeList(void);
-
 addrType_t typeChoose(void);
-
-BaseAddr* createAddr(addrType_t t);
+BaseAddr* createAddr();
 
 class AddrList: public List{
 	public:
 		void Sort(void);
-
-		void ChangeTwoItems(Item* first, Item* second);
-
-		void Find(const std::string& pattern);
-
 		void PrintList(void);
+		void Find(const std::string& pattern);
 };
 
 class BaseAddr: public Item{
 	private:
 		std::string name;
 		std::string descr;
-		addrType_t addrType;
 	public:
-		BaseAddr(void);
-		~BaseAddr(void);
-		explicit BaseAddr(addrType_t t);
 		std::string Name(void) const;
 		std::string Descr(void) const;
-		addrType_t AddrType(void) const;
-		void Print(void);
-		void Input(void);
-		void BaseInput(void);
+		virtual void Print(void) = 0;
+		virtual void Input(void) = 0;
+		virtual addrType_t Type(void) const = 0;
 };
 
 class File{
@@ -57,41 +46,38 @@ class File{
 		std::string Path(void) const;
 		std::string Filename(void) const;
 		void Input(void);
-
 };
 
 class NetAddr: public BaseAddr, public File{
 	private:
 		std::string protocol;
 	public:
-		NetAddr(void);
-		void Print(void);
-		void Input(void);
+		void Print(void) override;
+		void Input(void) override;
+		addrType_t Type(void) const override;
 };
 
 class LocalFileAddr: public BaseAddr, public File{
-	private:
-
 	public:
-		LocalFileAddr(void);
-		void Print(void);
-		void Input(void);
+		void Print(void) override;
+		void Input(void) override;
+		addrType_t Type(void) const override;
 };
 
 class LocalNetworkAddr: public BaseAddr, public File{
 	public:
-		LocalNetworkAddr(void);
-		void Print(void);
-		void Input(void);
+		void Print(void) override;
+		void Input(void) override;
+		addrType_t Type(void) const override;
 };
 
 class EmailAddr: public BaseAddr{
 	private:
 		std::string userName;
 	public:
-		EmailAddr(void);
-		void Print(void);
-		void Input(void);
+		void Print(void) override;
+		void Input(void) override;
+		addrType_t Type(void) const override;
 };
 
 #endif

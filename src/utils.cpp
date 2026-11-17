@@ -15,9 +15,9 @@ void clearScreen(void){
 }
 int enterInt(int& n) {
 	if (!(cin >> n)) {
-    	cin.clear();
-        cin.ignore(10000, '\n');
-        return 1;
+		cin.clear();
+		cin.ignore(10000, '\n');
+		return 1;
 	}
 	return 0;
 }
