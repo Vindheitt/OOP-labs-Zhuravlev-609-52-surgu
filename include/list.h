@@ -13,13 +13,13 @@ class Item{
 		Item *prev;
 		List *owner;
 	public:
-		Item();
+		Item(void);
 
-		~Item();
+		~Item(void);
 
-		Item* Next() const;
+		Item* Next(void) const;
 
-		Item* Prev() const;
+		Item* Prev(void) const;
 };
 
 class List{
@@ -28,13 +28,13 @@ class List{
 		Item *tail;
 
 	public:
-		List();
+		List(void);
 
-		~List();
+		~List(void);
 
-		Item* Head() const;
+		Item* Head(void) const;
 
-		Item* Tail() const;
+		Item* Tail(void) const;
 
 		void Add(Item *newItem);
 
@@ -48,10 +48,12 @@ class List{
 
 		void Insert(Item *newItem, int index);
 
-		int Count();
+		int Count(void);
 
-		void Clear();
+		void Clear(void);
 
 		int GetIndex(const Item *item);
+
+		void Swap(Item* first, Item* second);
 };
 #endif
