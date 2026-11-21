@@ -1,34 +1,25 @@
-CC = gcc
-# CXX = g++
+CXX = g++
 SRC_DIR = src
 INC_DIR = include
 OBJDIR = obj
+DEBUG_FLAG = -D DEBUG
 
-CFLAGS = -Wall -Wextra -Wpedantic -I$(INC_DIR)
-# CPPFLAGS = -std=c++17
+FLAGS = -Wall -Wextra -Wpedantic -I./$(INC_DIR)
+CPPFLAGS = -std=c++23
 LDFLAGS =
 
-C_SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/list.c $(SRC_DIR)/utils.c $(SRC_DIR)/addr.c
-C_OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJDIR)/%.o,$(C_SRCS))
+ALL_SRC_FILES = $(SRC_DIR)/main.cpp $(SRC_DIR)/list.cpp $(SRC_DIR)/utils.cpp
 
-TARGETS = cLab
-#cppLab
+TARGETS = cLab cppLab
 
-all: $(TARGETS)
+all:
+	$(CXX) $(ALL_SRC_FILES) $(CPPFLAGS) $(FLAGS) -o cppLab
 
-$(OBJDIR):
-	mkdir -p $@
 
-$(OBJDIR)/%.o: $(SRC_DIR)/%.c | $(OBJDIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-
-cLab: $(C_OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
-
-# cppLab: $(SRC_DIR)/main.cpp
-# 	$(CXX) $(SRC_DIR)/main.cpp $(CPPFLAGS) $(FLAGS) -o cppLab
+DEBUG:
+	$(CXX) $(DEBUG_FLAG) $(ALL_SRC_FILES) $(CPPFLAGS) $(FLAGS) -o cppLab
 
 clean:
-	rm -rf $(OBJDIR) $(TARGETS)
+	rm -rf $(TARGETS) $(OBJDIR)
 
-.PHONY: all clean
+.PHONY: all DEBUG clean

@@ -5,6 +5,5 @@ obj
 task/
 compile_commands.json
 .cache
-src/main.cpp
-test.sh
 .clangd
+test.sh
