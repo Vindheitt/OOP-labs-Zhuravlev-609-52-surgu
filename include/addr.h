@@ -15,15 +15,16 @@ typedef enum addrType{
 	EMAIL_ADDR,
 } addrType_t;
 
-void typeList(void);
-addrType_t typeChoose(void);
-BaseAddr* createAddr();
-
 class AddrList: public List{
 	public:
 		void Sort(void);
 		void PrintList(void);
 		void Find(const std::string& pattern);
+
+		BaseAddr& operator[](int index);
+		void typeList(void);
+
+		addrType_t typeChoose(void);
 };
 
 class BaseAddr: public Item{
@@ -33,9 +34,15 @@ class BaseAddr: public Item{
 	public:
 		std::string Name(void) const;
 		std::string Descr(void) const;
+		static BaseAddr* createAddr(addrType_t t);
 		virtual void Print(void) = 0;
 		virtual void Input(void) = 0;
 		virtual addrType_t Type(void) const = 0;
+		bool operator<(const BaseAddr& p);
+		bool operator<=(const BaseAddr& p);
+		bool operator>(const BaseAddr& p);
+		bool operator>=(const BaseAddr& p);
+		bool operator==(const std::string& s) const;
 };
 
 class File{
