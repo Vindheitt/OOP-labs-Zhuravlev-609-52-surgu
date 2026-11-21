@@ -1,32 +1,56 @@
 #ifndef LIST_H
 #define LIST_H
 
-typedef struct item item_t;
+class Item;
+class List;
 
-typedef struct item{
-    item_t *next;
-    item_t *prev;
-} item_t;
+class Item{
+	friend class List;
 
-typedef struct list{
-    item_t *head;
-    item_t *tail;
-} list_t;
+	private:
+		Item *next;
+		Item *prev;
+		List *owner;
+	public:
+		Item();
 
-void Add(list_t *list, item_t *newItem);
+		~Item();
 
-void Delete(list_t *list, int index);
+		Item* Next() const;
 
-item_t *GetItem(const list_t *list, int index);
+		Item* Prev() const;
+};
 
-item_t *Remove(list_t *list, int index);
+class List{
+	private:
+		Item *head;
+		Item *tail;
 
-void Insert(list_t *list, item_t *newItem, int index);
+	public:
+		List();
 
-int Count(const list_t *list);
+		~List();
 
-void Clear(list_t *list);
+		Item* Head() const;
 
-int GetIndex(const list_t *list, const item_t *item);
+		Item* Tail() const;
 
+		void Add(Item *newItem);
+
+		void Delete(int index);
+
+		Item *GetItem(int index);
+
+		Item* Remove(int index);
+
+		Item* Remove(Item* item);
+
+		void Insert(Item *newItem, int index);
+
+		int Count();
+
+		void Clear();
+
+		int GetIndex(const Item *item);
+};
 #endif
