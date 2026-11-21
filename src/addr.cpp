@@ -2,6 +2,7 @@
 #include <format>
 #include <iostream>
 #include <list.h>
+#include <stdexcept>
 #include <string>
 #include <utils.h>
 
@@ -10,47 +11,31 @@ using std::cin;
 using std::format;
 
 void AddrList::PrintList(){
-	Item *p;
-	int i;
-	for(p = Head(), i = 0;
-		p != nullptr;
-		p = p->Next(), i++){
-		cout << i << " ";
-		((BaseAddr*)p)->Print();
+	int quantity = Count();
+	for(int i = 0; i < quantity; i++){
+		cout << i << ")";
+		(*this)[i].Print();
 	}
 }
 void AddrList::Sort(){
 	int i, j;
 	int quanity;
-	BaseAddr* p1;
-	BaseAddr* p2;
-
 
 	quanity = Count();
 	for(i = 0; i < quanity - 1; i++){
-		p1 = (BaseAddr*)GetItem(i);
 		for(j = i + 1; j < quanity; j++){
-			p2 = (BaseAddr*)GetItem(j);
-			if(p1->Name() > p2->Name())
-				p1 = p2;
+			if((*this)[i] > (*this)[j])
+				Insert(Remove(&(*this)[j]), i);
 		}
-		Insert(Remove(p1), i);
 	}
 }
 void AddrList::Find(const std::string& pattern){
-	BaseAddr* ptr;
-	int i;
-	std::size_t pos;
-
-	for(ptr = (BaseAddr*)this->Head(), i = 0;
-		ptr != nullptr;
-		ptr = (BaseAddr*)ptr->Next(), i++)
-	{
-		pos = ptr->Descr().find(pattern);
-		if (pos == std::string::npos)
+	int quantity = Count();
+	for(int i = 0; i < quantity; i++){
+		if ((*this)[i] != pattern)
 			continue;
 		cout << format("{})", i);
-	 	ptr->Print();
+	 	(*this)[i].Print();
 	}
 }
 //-------------
@@ -60,8 +45,7 @@ std::string BaseAddr::Descr() const { return this->descr; }
 std::string File::Path() const { return this->path; }
 std::string File::Filename() const { return this->filename; }
 //-------------
-BaseAddr* createAddr() {
-	addrType_t t = typeChoose();
+BaseAddr* BaseAddr::createAddr(addrType_t t) {
 	switch (t) {
 		case NETWORK_ADDR:	   return new NetAddr();
 		case LOCAL_FILE_ADDR:	return new LocalFileAddr();
@@ -71,13 +55,13 @@ BaseAddr* createAddr() {
 		default:				 return nullptr;
 	}
 }
-void typeList(void) {
+void AddrList::typeList(void) {
 	cout << "\t1 - Network Addreas\n";
 	cout << "\t2 - Local Addreas\n" ;
 	cout << "\t3 - Local Network Addreas\n";
 	cout << "\t4 - Email Addreas\n" ;
 }
-addrType_t typeChoose(void){
+addrType_t AddrList::typeChoose(void){
 	int numType = -1;
 	addrType_t type = NONE;
 	while(!type){
@@ -164,3 +148,25 @@ addrType_t NetAddr::Type(void) const { return NETWORK_ADDR; }
 addrType_t LocalFileAddr::Type(void) const { return LOCAL_FILE_ADDR; }
 addrType_t LocalNetworkAddr::Type(void) const { return LOCAL_NETWORK_ADDR; }
 addrType_t EmailAddr::Type(void) const { return EMAIL_ADDR; }
+//-------------------
+BaseAddr& AddrList::operator[](int index){
+	BaseAddr* ptr = (BaseAddr*)GetItem(index);
+	if(ptr != nullptr)
+		return *ptr;
+	throw std::out_of_range("AddrList::operator[]");
+}
+bool BaseAddr::operator<(const BaseAddr& p){
+	return (this->Name() < p.Name());
+}
+bool BaseAddr::operator<=(const BaseAddr& p){
+	return (this->Name() <= p.Name());
+}
+bool BaseAddr::operator>(const BaseAddr& p){
+	return (this->Name() > p.Name());
+}
+bool BaseAddr::operator>=(const BaseAddr& p){
+	return (this->Name() >= p.Name());
+}
+bool BaseAddr::operator!=(const std::string& s) const {
+    return Descr().find(s) == std::string::npos;
+}

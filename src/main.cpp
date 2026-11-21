@@ -29,7 +29,7 @@ class DebugList: public AddrList{
 //-----------------------------------------
 int main() {
 	int userChoose;
-
+	addrType_t t;
 	int index;
 	BaseAddr *item;
 	DebugList dl;
@@ -42,7 +42,8 @@ int main() {
 		clearScreen();
 		switch (userChoose) {
 			case 1:
-				item = createAddr();
+				t = dl.typeChoose();
+				item = BaseAddr::createAddr(t);
 				if (!item)
 			 		break;
 			 	item->Input();
@@ -56,7 +57,8 @@ int main() {
 				dl.Delete(index);
 				break;
 			case 3:
-				item = createAddr();
+				t = dl.typeChoose();
+				item = BaseAddr::createAddr(t);
 				if (!item)
 			 		break;
 				item->Input();
